@@ -41,3 +41,10 @@ rmarkdown::render(input         = "presentation.Rmd",
 # }
 cat("\nAll done.\n")
 timestamp()
+
+
+library(slackr)
+slackr_setup(config_file = "/opt/tadaadata/.slackr")
+
+msg <- paste0(lubridate::now(tzone = "CEST"), ": Built Pruefungstutorium SoSe 18")
+text_slackr(msg, channel = "#tutorium", username = "tadaabot", preformatted = FALSE)
