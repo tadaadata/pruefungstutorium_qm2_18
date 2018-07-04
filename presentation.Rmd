@@ -121,6 +121,7 @@ b) Zu welchem Ergebnis würde der Inferenzschluss führen, wenn anstelle des ein
 ## Aufgabe 2: Stichprobe ziehen, Testwert bestimmen
 
 ```{r}
+set.seed(2)
 a02_mean <- ngo %>% sample_n(40) %>% pull(stunzahl) %>% mean
 ```
 
@@ -137,11 +138,10 @@ z \approx& {\color{red}{\underline{\underline{`r round((a02_mean - 33) / (1.5/sq
 \end{align}$$
 </div>
 
-Kritischer Wert: *-1.64*
-
 ## Aufgabe 2a: Inferenzschluss in bunt
 
-bei $\alpha = 5\%$, einseitig:
+bei $\alpha = 5\%$, einseitig:  
+Kritischer Wert: *-1.64*
 
 ```{r a02a_bunt}
 ztest <- (a02_mean - 33) / (1.5 / sqrt(40))
@@ -152,7 +152,7 @@ ggplot(data = NULL, aes(x = -3.3:3.3)) +
   geom_vline(aes(xintercept = ztest), color = "blue") +
   annotate("text", x = qnorm(.05), y = 0.35, color = "dark red", size = 5,
            label = paste("z[krit]", "==", round(qnorm(.05), 2)), parse = T) +
-  annotate("text", x = ztest - 0.5, y = 0.25, color = "dark blue", size = 7,
+  annotate("text", x = ztest - 0.25, y = 0.25, color = "dark blue", size = 7,
            label = paste("z[test]", "==", round(ztest, 2)), parse = T) +
   labs(x = NULL, y = NULL) +
   theme_readthedown(base_family = "Palatino")
