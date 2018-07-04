@@ -39,5 +39,5 @@ rmarkdown::render(input         = "presentation.Rmd",
 # if (all(copy_assets)) {
 #   cat("\nAll assets copied successfully\n")
 # }
-# cat("\nAll done.\n")
-# timestamp()
+cat("\nAll done.\n")
+timestamp()
