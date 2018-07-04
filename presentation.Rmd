@@ -118,6 +118,28 @@ a) Dazu ist eine Zufallsstichprobe vom Umfang 40 zu ziehen und bezüglich der Al
 
 b) Zu welchem Ergebnis würde der Inferenzschluss führen, wenn anstelle des einseitigen Tests ein zweiseitiger Test zur Prüfung der Hypothese $\mu = 33$ zu erfolgen hätte?
 
+## Aufgabe 2: Stichprobe ziehen, Testwert bestimmen
+
+```{r}
+a02_mean <- ngo %>% sample_n(40) %>% pull(stunzahl) %>% mean
+```
+
+
+<div id = "left">
+$$\bar{x} = `r round(a02_mean, 2)`$$
+$$\sigma_x := 1.5$$
+</div>
+<div id = "right">
+$$\begin{align}
+z =& \frac{\bar{x} - \mu_0}{\frac{\sigma_x}{\sqrt{n}}} \\
+z =& \frac{`r round(a02_mean, 2)` - 33}{\frac{1.5}{\sqrt{40}}} \\
+z \approx& {\color{red}{\underline{\underline{`r round((a02_mean - 33) / (1.5/sqrt(40)), 2)`}}}}
+\end{align}$$
+</div>
+
+Kritischer Wert: *-1.64*
+
+
 # Aufgabe 3
 
 Durch einen einseitigen t-Test soll eine innerhalb einer Nullhypothese postulierte Mitte auf der Basis der Risiken „Alpha=0,05“ und „Beta=0,15“ – bei der Wahl einer Eﬀektgröße von „-0,6“ teststatistisch abgesichert werden! Wie groß ist der optimale Stichprobenumfang und welche Bedeutung besitzt er? Wie verändert sich der optimale Stichprobenumfang, wenn Sie ß erhöhen oder wenn die Eﬀektgröße verringert wird? Warum ist das so?
