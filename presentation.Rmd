@@ -1,0 +1,104 @@
+---
+title: "Prüfungstutorium QM I (WS 17/18)"
+author: "mit Tobi & Lukas"
+date: "`r format(Sys.time(), 'erstellt am %F um %H:%M Uhr')`"
+output:
+  revealjs::revealjs_presentation:
+    mathjax: local
+    keep_md: true
+    css: "assets/styles.css"
+    theme: simple
+    highlight: kate
+    incremental: false
+    transition: slide
+    widescreen: yes
+    background_transition: slide
+    self_contained: false
+    fig_height: 7
+    fig_retina: 2
+    fig_width: 12
+    lib_dir: "assets/libs"
+    reveal_options:
+      slideNumber: true
+      progress: true
+      history: true
+      center: true
+  html_document:
+    fig_caption: yes
+    fig_width: 9
+    number_sections: no
+    self_contained: no
+    lib_dir: "assets/libs"
+    toc: yes
+    toc_float: true
+    code_folding: show
+    include:
+      after_body: "assets/_footer.html"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.path = "assets/plots/", fig.align = "center", 
+                      fig.retina = 2, echo = F, warning = F, message = F)
+library(MASS)
+library(ppcor)
+library(sjPlot)
+library(sjmisc)
+library(sjlabelled)
+library(dplyr)
+library(knitr)
+library(ggplot2)
+library(tadaatoolbox)
+library(magrittr)
+library(car)
+library(htmlTable)
+library(tidyr)
+
+# NGO & FKV Datensatz einlesen
+fkv   <- haven::read_sav("data/fkv.sav")
+zombo <- readRDS("data/zombo.rds")
+
+# 3 digits are enough
+options(digits = 3)
+
+# selfmade ggplot-Theme laden und global setzen
+theme_set(theme_tadaa(base_size = 16))
+```
+
+# Na, auch hier?
+
+## Für die letzte Reihe
+
+### Slides
+
+<span class = "big">[https://tadaa.click/qm1ws1718](https://tadaa.click/qm1ws1718)</span>
+
+### Alles auf einmal
+
+<span class = "big">[https://tadaa.click/qm1ws1718w](https://tadaa.click/qm1ws1718w)</span>
+
+## Agenda
+
+>1. Aufgaben besprechen <small>Pflichtprogramm</small>
+>2. Fragen klären <small>Standard</small>
+>3. Angrenzende Theorie besprechen <small>Bonus</small>
+
+## Erfahrungsgemäß reicht die Zeit...
+
+<div class = "fragment">… **entweder** für alle **Aufgaben**…</div>
+<div class = "fragment">… **oder** für alle **Fragen** </div>
+<br />
+<div class="fragment">Choose wisely.</div>
+
+
+## {data-background="img/excited_MSS0COPq80x68.gif" data-background-size="60%"}
+
+
+# Klar soweit?
+
+## Nochmal zum nachlesen
+
+<span class = "big">[https://tadaa.click/qm1ws1718](https://tadaa.click/qm1ws1718)</span>
+
+<span class = "big">[https://tadaa.click/qm1ws1718w](https://tadaa.click/qm1ws1718w)</span>
+
+## {data-background="img/mic-drop.gif" data-background-size="60%"}
