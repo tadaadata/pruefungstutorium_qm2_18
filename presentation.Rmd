@@ -139,6 +139,24 @@ z \approx& {\color{red}{\underline{\underline{`r round((a02_mean - 33) / (1.5/sq
 
 Kritischer Wert: *-1.64*
 
+## Aufgabe 2a: Inferenzschluss in bunt
+
+bei $\alpha = 5\%$, einseitig:
+
+```{r a02a_bunt}
+ztest <- (a02_mean - 33) / (1.5 / sqrt(40))
+
+ggplot(data = NULL, aes(x = -3.3:3.3)) +
+  stat_function(fun = dnorm, geom = "density", color = "black") +
+  geom_vline(aes(xintercept = qnorm(.05)), color = "red") +
+  geom_vline(aes(xintercept = ztest), color = "blue") +
+  annotate("text", x = qnorm(.05), y = 0.35, color = "dark red", size = 5,
+           label = paste("z[krit]", "==", round(qnorm(.05), 2)), parse = T) +
+  annotate("text", x = ztest - 0.5, y = 0.25, color = "dark blue", size = 7,
+           label = paste("z[test]", "==", round(ztest, 2)), parse = T) +
+  labs(x = NULL, y = NULL) +
+  theme_readthedown(base_family = "Palatino")
+```
 
 # Aufgabe 3
 
