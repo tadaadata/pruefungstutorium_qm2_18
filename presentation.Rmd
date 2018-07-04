@@ -11,7 +11,7 @@ output:
     highlight: kate
     incremental: false
     transition: slide
-    widescreen: yes
+    widescreen: no
     background_transition: slide
     self_contained: false
     fig_height: 7
@@ -64,11 +64,7 @@ theme_set(theme_tadaa(base_size = 16))
 
 ### Slides
 
-<span class = "big">[https://tadaa.click/qm1ws1718](https://tadaa.click/qm1ws1718)</span>
-
-### Alles auf einmal
-
-<span class = "big">[https://tadaa.click/qm1ws1718w](https://tadaa.click/qm1ws1718w)</span>
+<span class = "big">[tadaa.click/qm2sose18](https://tadaa.click/qm2sose18)</span>
 
 ## Agenda
 
@@ -208,6 +204,6 @@ a) Wie wahrscheinlich ist es, dass Werte im Bereich 2 bis 2,5; im Bereich 0,75 b
 
 ## Nochmal zum nachlesen
 
-<span class = "big">[https://tadaa.click/qm2sose18](https://tadaa.click/qm1ws1718)</span>
+<span class = "big">[tadaa.click/qm2sose18](https://tadaa.click/qm1ws1718)</span>
 
 ## {data-background="img/mic-drop.gif" data-background-size="60%"}
