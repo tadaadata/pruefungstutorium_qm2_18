@@ -88,17 +88,39 @@ theme_set(theme_tadaa(base_size = 16))
 
 # Aufgabe 1
 
-Prüfen Sie die Hypothese, ob zwischen den Merkmalen "Geschlecht" und "Abschalten" innerhalb der Grundgesamtheit aller NGO-SchülerInnen eine statistische Beziehung existiert. Lassen Sie sich bei der Ausgabe eine Kontigenztabelle mitanzeigen.
+## Aufgabe 1
 
-Berechnen Sie den Testwert per Hand.
+> Prüfen Sie die Hypothese, ob zwischen den Merkmalen "Geschlecht" und "Abschalten" innerhalb der Grundgesamtheit aller NGO-SchülerInnen eine statistische Beziehung existiert. Lassen Sie sich bei der Ausgabe eine Kontigenztabelle mitanzeigen.
+
+> Berechnen Sie den Testwert per Hand.
+
+## Aufgabe 1: Tabelle & Berechnung
+
+<div id = "left">
+
+```{r a01_tabelle}
+sjt.xtab(ngo$geschl, ngo$abschalt, show.exp = TRUE, 
+         show.legend = TRUE, show.summary = FALSE)
+```
+</div>
+<div id = "right">
+$$\begin{align}
+\chi^2 =& \sum \frac{(f_b - f_e)^2}{f_e} \\
+\chi^2 =& \frac{(60  - 69)^2}{69} + \frac{(63 - 54)^2}{54} \\+ 
+& \frac{(78 - 69)^2}{69} + \frac{(45 - 54)^2}{54} \\
+\chi^2 \approx& {\color{red}{\underline{\underline{5.35}}}}
+\end{align}$$
+</div>
 
 # Aufgabe 2
 
-Es wird davon ausgegangen, dass das Merkmal "Unterrichtsstunden" in der Grundgesamtheit der 250 NGO-SchülerInnen N(µ,1.5)-verteilt ist. Es ist eine Prüfung der Nullhypothese "µ=33" durchzuführen!
+## Aufgabe 2
 
-a) Dazu ist eine Zufallsstichprobe vom Umfang 40 zu ziehen und bezüglich der Alternativhypothese H1(µ<33) ein Signiﬁkanz-Test mit einem Testniveau von "=0,05" durchzuführen! Erklären Sie, wie sich der Testwert ermitteln lässt.
+> Es wird davon ausgegangen, dass das Merkmal "Unterrichtsstunden" in der Grundgesamtheit der 250 NGO-SchülerInnen $\mathrm{N}(\mu, 1.5)$-verteilt ist. Es ist eine Prüfung der Nullhypothese $\mu = 33$ durchzuführen!
 
-b) Zu welchem Ergebnis würde der Inferenzschluss führen, wenn anstelle des einseitigen Tests ein zweiseitiger Test zur Prüfung der Hypothese "µ=33" zu erfolgen hätte?
+a) Dazu ist eine Zufallsstichprobe vom Umfang 40 zu ziehen und bezüglich der Alternativhypothese$H_1 (\mu_1 < 33)$ ein Signiﬁkanz-Test mit einem Testniveau von $\alpha = 0.05$ durchzuführen! Erklären Sie, wie sich der Testwert ermitteln lässt.
+
+b) Zu welchem Ergebnis würde der Inferenzschluss führen, wenn anstelle des einseitigen Tests ein zweiseitiger Test zur Prüfung der Hypothese $\mu = 33$ zu erfolgen hätte?
 
 # Aufgabe 3
 
