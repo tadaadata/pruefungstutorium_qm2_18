@@ -73,13 +73,6 @@ theme_set(theme_tadaa(base_size = 16))
 >2. Fragen klären <small>Standard</small>
 >3. Angrenzende Theorie besprechen <small>Bonus</small>
 
-## Erfahrungsgemäß reicht die Zeit...
-
-<div class = "fragment">… **entweder** für alle **Aufgaben**…</div>
-<div class = "fragment">… **oder** für alle **Fragen** </div>
-<br />
-<div class="fragment">Choose wisely.</div>
-
 
 ## {data-background="img/excited_MSS0COPq80x68.gif" data-background-size="60%"}
 
@@ -87,9 +80,9 @@ theme_set(theme_tadaa(base_size = 16))
 
 ## Aufgabe 1
 
-> Prüfen Sie die Hypothese, ob zwischen den Merkmalen "Geschlecht" und "Abschalten" innerhalb der Grundgesamtheit aller NGO-SchülerInnen eine statistische Beziehung existiert. Lassen Sie sich bei der Ausgabe eine Kontigenztabelle mitanzeigen.
+Prüfen Sie die Hypothese, ob zwischen den Merkmalen "Geschlecht" und "Abschalten" innerhalb der Grundgesamtheit aller NGO-SchülerInnen eine statistische Beziehung existiert. Lassen Sie sich bei der Ausgabe eine Kontigenztabelle mitanzeigen.
 
-> Berechnen Sie den Testwert per Hand.
+<p class="fragment">**Berechnen Sie den Testwert per Hand.**</p>
 
 ## Aufgabe 1: Tabelle & Berechnung
 
@@ -113,11 +106,11 @@ $$\begin{align}
 
 ## Aufgabe 2
 
-> Es wird davon ausgegangen, dass das Merkmal "Unterrichtsstunden" in der Grundgesamtheit der 250 NGO-SchülerInnen $\mathrm{N}(\mu, 1.5)$-verteilt ist. Es ist eine Prüfung der Nullhypothese $\mu = 33$ durchzuführen!
+Es wird davon ausgegangen, dass das Merkmal "Unterrichtsstunden" in der Grundgesamtheit der 250 NGO-SchülerInnen $\mathrm{N}(\mu, 1.5)$-verteilt ist. Es ist eine Prüfung der Nullhypothese $\mu = 33$ durchzuführen!
 
-a) Dazu ist eine Zufallsstichprobe vom Umfang 40 zu ziehen und bezüglich der Alternativhypothese$H_1 (\mu_1 < 33)$ ein Signiﬁkanz-Test mit einem Testniveau von $\alpha = 0.05$ durchzuführen! Erklären Sie, wie sich der Testwert ermitteln lässt.
+a) Dazu ist eine Zufallsstichprobe vom Umfang 40 zu ziehen und bezüglich der Alternativhypothese$H_1 (\mu_1 < 33)$ ein Signiﬁkanz-Test mit einem Testniveau von $\alpha = 0.05$ durchzuführen! **Erklären Sie, wie sich der Testwert ermitteln lässt.**
 
-b) Zu welchem Ergebnis würde der Inferenzschluss führen, wenn anstelle des einseitigen Tests ein zweiseitiger Test zur Prüfung der Hypothese $\mu = 33$ zu erfolgen hätte?
+b) Zu welchem Ergebnis würde der Inferenzschluss führen, wenn anstelle des _einseitigen_ Tests ein _zweiseitiger_ Test zur Prüfung der Hypothese $\mu = 33$ zu erfolgen hätte?
 
 ## Aufgabe 2: Stichprobe ziehen, Testwert bestimmen
 
@@ -165,7 +158,7 @@ ggplot(data = NULL, aes(x = -3.3:3.3)) +
 
 ## Aufgabe 3
 
-Durch einen **einseitigen t-Test** soll eine innerhalb einer Nullhypothese postulierte Mitte auf der Basis der Risiken $\alpha=0.05$ und $\beta=0.15$ – bei der Wahl einer Effektgröße von **-0.6** – teststatistisch abgesichert werden! Wie groß ist der **optimale Stichprobenumfang** und welche Bedeutung besitzt er? Wie verändert sich der optimale Stichprobenumfang, wenn Sie $\beta$ erhöhen oder wenn die Effektgröße verringert wird? Warum ist das so?
+Durch einen _einseitigen t-Test_ soll eine innerhalb einer Nullhypothese postulierte Mitte auf der Basis der Risiken $\alpha=0.05$ und $\beta=0.15$ – bei der Wahl einer Effektgröße von **-0.6** – teststatistisch abgesichert werden! Wie groß ist der **optimale Stichprobenumfang** und welche Bedeutung besitzt er? Wie **verändert** sich der optimale Stichprobenumfang, wenn Sie $\beta$ _erhöhen_ oder wenn die Effektgröße _verringert_ wird? Warum ist das so?
 
 ## Aufgabe 3: $\beta$
 
@@ -202,7 +195,7 @@ Für die aus einer Zufallsauswahl vom Umfang **36** resultierenden Werte eines *
 
 ## Aufgabe 4: Berechnung
 
-- $w_{krit} \approx  `r qnorm(0.975)`$
+- $w_{krit} \approx `r qnorm(0.975)`$
 - $CI_{lower} = 33 - 1.2 \cdot `r round(qnorm(0.975), 3)` \approx `r 33 - 1.2 * qnorm(0.975)`$
 - $CI_{upper} = 33 + 1.2 \cdot `r round(qnorm(0.975), 3)` \approx `r 33 + 1.2 * qnorm(0.975)`$
 
@@ -229,9 +222,12 @@ ggplot(data = df, aes(x = x, y = y)) +
 
 ## Aufgabe 5
 
-Berechnen Sie einen geeignetenTest für die Fragestellung, ob die Verteilungen des Alkoholkkonsums bei ernährungsbewussten StudentInnen (Vegetarier) und der ﬂeischkonsumierenden StudentInnen gleich sind. Prüfen Sie einseitig die Annahme, dass die Tatsache Vegetarier zu sein, sich positiv auf einen geringeren Alkoholkonsum auswirkt. Wie kommt der resultierende Testwert zustande?
+Berechnen Sie einen geeigneten Test für die Fragestellung, ob die Verteilungen des Alkoholkkonsums bei ernährungsbewussten StudentInnen (Vegetarier) und der ﬂeischkonsumierenden StudentInnen gleich sind. Prüfen Sie einseitig die Annahme, dass die Tatsache Vegetarier zu sein, sich positiv auf einen geringeren Alkoholkonsum auswirkt. Wie kommt der resultierende Testwert zustande?
+
+## Wonach wähle ich einen "geeigneten" Test aus?
 
 # Aufgabe 6
+
 ## Aufgabe 6
 
 a) Die Hypothese, dass es für die Schülerinnen keine jahrgangsstufenspeziﬁschen Unterschiede im Hinblick auf die Anzahl von Wochentagen gibt, an denen für das Fach „Deutsch“ gelernt wird, ist mit den für die NGO-SchülerInnen erhobenen Daten teststatistisch zu prüfen!
@@ -275,6 +271,12 @@ d) Wie viele SchülerInnen wären für jede der 6 Zellen des Versuchsplans erfor
 
 Wählen Sie selbst für Sie interessante Variablen einmal für eine Varianzanalyse, einmal für den Kruskal-Wallis-Test & einmal für den Wilcoxon-Test aus dem Psychologie-Datensatz aus und interpretieren Sie die Daten.
 
+# Aufgabe 12
+
+## Lernhilfe
+
+Nennen Sie die Voraussetzungen aller behandelter Signifikanztests und ihrer Teststatistiken. Erstellen Sie hierzu eine Übersicht. Schauen Sie sich Ausgabetabellen aller Signifikanztests an und legen Sie fest, was einzelne Werte aussagen, wie sie ggfs. berechnet werden und wie im Besonderen Testwerte zustande kommen.
+
 # Aufgabenblock: Berechnungen per Hand
 
 Meeeeeh
@@ -313,4 +315,10 @@ a) Wie wahrscheinlich ist es, dass Werte im Bereich 2 bis 2,5; im Bereich 0,75 b
 
 <span class = "big">[tadaa.click/qm2sose18](https://tadaa.click/qm1ws1718)</span>
 
-## {data-background="img/mic-drop.gif" data-background-size="60%"}
+## 
+
+Das war's, wir sind raus.
+
+![](img/mic-drop.gif)
+
+**Viel Erfolg!!**
