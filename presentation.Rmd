@@ -49,6 +49,7 @@ library(pwr)
 library(sjlabelled)
 library(sjmisc)
 library(sjPlot)
+library(stringr)
 library(tadaatoolbox)
 library(tidyr)
 
@@ -57,6 +58,9 @@ options(digits = 3)
 
 # selfmade ggplot-Theme laden und global setzen
 theme_set(theme_tadaa(base_size = 16, bg = "#ffffff"))
+
+# no data, no stats
+qm <- readRDS("./data/qm_survey_ss2018_r.rds")
 ```
 
 # Na, auch hier?
@@ -284,15 +288,82 @@ map_df(seq_len(20), function(x){
     theme(legend.position = "top")
 ```
 
-# Aufgabe 5
+# Aufgabe 5:<br />Test-Auswahl
 
 ## Aufgabe 5
 
 Berechnen Sie einen geeigneten Test für die Fragestellung, ob die Verteilungen des Alkoholkkonsums bei ernährungsbewussten StudentInnen (Vegetarier) und der ﬂeischkonsumierenden StudentInnen gleich sind. Prüfen Sie einseitig die Annahme, dass die Tatsache Vegetarier zu sein, sich positiv auf einen geringeren Alkoholkonsum auswirkt. Wie kommt der resultierende Testwert zustande?
 
-## Wonach wähle ich einen "geeigneten" Test aus?
+## {data-background="https://tobi.tadaa-data.de/qm/pics/nhst_wahl.png" data-background-size="60%"}
 
-# Aufgabe 6
+## Normalverteilung?
+
+Test  | _p_-Wert
+------|--------
+Kolmogorov-Smirnoff | `r pval_string(ks.test(as.numeric(qm$alkohol), "pnorm")$p.value)`
+Chi²-Anpassungstest | `r pval_string(nortest::pearson.test(as.numeric(qm$alkohol), n.classes = 5)$p.value)`
+Shapiro-Wilk  | `r pval_string(shapiro.test(as.numeric(qm$alkohol))$p.value)`
+
+```{r a05_bars1, fig.height= 3, fig.width=7}
+ggplot(qm, aes(alkohol)) +
+  geom_bar() +
+  labs(x = "Alkoholkonsum", y = "Anzahl")
+```
+
+## Gruppengröße und Varianzen
+
+```{r a05_bars2, fig.height= 4, fig.width=7}
+omni_veg <- qm %>% 
+  filter(str_detect(ernaehrung, "Veget|Omni")) %>% 
+  mutate(alk_num = as.numeric(alkohol),
+         ernaehrung = droplevels(ernaehrung))
+
+ggplot(omni_veg, aes(ernaehrung, fill = ernaehrung)) +
+  geom_bar() +
+  scale_fill_brewer(palette = "Dark2", direction = -1) +
+  labs(x = "Ernährungseinstellung", y = "Anzahl",
+       fill = "Ernährung")
+
+a05_levene <- pval_string(leveneTest(omni_veg$alk_num ~ omni_veg$ernaehrung)$`Pr(>F)`[1])
+```
+
+Levene-Test _p_-Wert: `r a05_levene`
+
+## Sieger-Test
+
+<p class="fragment">**Two-Sample t-Test!**</p>
+
+<div class="fragment">
+```{r a05_t_test}
+tadaa_t.test(omni_veg, alk_num, ernaehrung, var.equal = TRUE,
+             direction = "greater", print = "markdown")
+```
+</div>
+
+## There's one more thing...
+
+Wie kommt der resultierende Testwert zustande?
+
+
+$$
+t_{(n_1 + n_2 - 2)} = \frac{\mu_1 - \mu_2}{s_{\bar{x}_1-\bar{x}_2}}
+$$
+
+Wobei für $s_{\bar{x_1} - \bar{x_2}}$ gilt:
+
+$$s_{\bar{x}_1 - \bar{x}_2} = \sqrt{S^2_p (\frac{1}{n_1} + \frac{1}{n_2})}$$
+
+<div class="col2">
+_n_ gleich groß:
+
+$$s^2_p = \frac{s^2_1 + s^2_2}{2}$$
+
+_n_ ungleich:
+
+$$s^2_p = \frac{(n_1 - 1)s^2_1 + (n_2 - 1)s^2_2}{(n_1 - 1) + (n_2 - 1)}$$
+</div>
+
+# Aufgabe 6:<br />Effektgrößen
 
 ## Aufgabe 6
 
@@ -300,21 +371,26 @@ a) Die Hypothese, dass es für die Schüler\*innen keine jahrgangsstufenspeziﬁ
 
 b) Falls ein signiﬁkantes Testergebnis vorliegt, ist die empirische Eﬀektgröße zu ermitteln und zu überprüfen, zwischen welchen Jahrgängen Unterschiede bestehen könnten!
 
-# Aufgabe 7
+# Aufgabe 7:<br />Tagelang nur NHST.
+
 ## Aufgabe 7
 
 In 3 Kursen (A, B, C) der 11. Jahrgangsstufe werden Schüler und Schüler\*innen nach unterschiedlichen Methoden unterrichtet. Aus jedem der 3 Kurse werden jeweils 9 Schüler\*innen durch eine Zufallsauswahl bestimmt. Bei einem abschließenden Leistungstest werden die folgenden Ergebnisse erzielt:
 
-Schüler\*innen des Kurses A: `10, 19, 21, 24, 22, 16, 11, 21, 19`
-Schüler\*innen des Kurses B: `16, 19, 18, 16, 11, 19, 19, 16, 21`
-Schüler\*innen des Kurses C: `22, 17, 12, 20, 16, 21, 22, 11, 21`
+Schüler\*innen des Kurses A: `10, 19, 21, 24, 22, 16, 11, 21, 19`  
+Schüler\*innen des Kurses B: `16, 19, 18, 16, 11, 19, 19, 16, 21`  
+Schüler\*innen des Kurses C: `22, 17, 12, 20, 16, 21, 22, 11, 21`  
 
-Wenden Sie einen geeigneten Test an.
+Wenden Sie einen geeigneten Test an¹.
+
+<br /><br />
+<p class="small">¹ Anm. der Redaktion: _"...um zu überprüfen, ob sich die Testergebnise Unterscheiden."_</p>
 
 # Aufgabe 8
+
 ## Aufgabe 8
 
-Auf dem Testniveau "=0,05" ist zu prüfen, ob bei den Schüler\*innen Mittelwertunterschiede bei den Merkmalen "Mathe" und "Deutsch" festzustellen sind! Dazu ist zu unterstellen, dass beide Merkmale innerhalb der Grundgesamtheit der 125 NGO-Schüler\*innen normalverteilt sind! Es ist ein zweiseitiger Test durchzuführen und der Stichprobenumfang so zu wählen, dass ein mittlerer Effekt mit einer Wahrscheinlichkeit von mindestens „0,85“ aufgedeckt werden kann. Wie viele Stichprobenelemente wären für die Durchführung eines einseitigen Tests angemessen gewesen?
+Auf dem Testniveau "$\alpha$ = 0,05" ist zu prüfen, ob bei den Schüler\*innen Mittelwertunterschiede bei den Merkmalen "Mathe" und "Deutsch" festzustellen sind! Dazu ist zu unterstellen, dass beide Merkmale innerhalb der Grundgesamtheit der 125 NGO-Schüler\*innen normalverteilt sind! Es ist ein zweiseitiger Test durchzuführen und der Stichprobenumfang so zu wählen, dass ein mittlerer Effekt mit einer Wahrscheinlichkeit von mindestens „0,85“ aufgedeckt werden kann. Wie viele Stichprobenelemente wären für die Durchführung eines einseitigen Tests angemessen gewesen?
 
 # Aufgabe 9
 ## Aufgabe 9
