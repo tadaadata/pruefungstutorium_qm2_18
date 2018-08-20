@@ -40,6 +40,7 @@ body {
     background-color: #fff;
 }
 
+
 /*********************************************
  * Multi-column stuff
  *********************************************/
@@ -110,9 +111,16 @@ table {
  * Misc stuff
  *********************************************/
 
+/* getting rid of framed plots */
+.reveal section img {
+  margin: 15px 0px;
+  border: none;
+  box-shadow: none; 
+  }
+
 /* plain text */
 .reveal section p {
-  text-align: center;
+  text-align: center; /* not sure if left-aligned is actually better (or worth the adjustment-work) */
   font-size: 0.8em;
 }
 
