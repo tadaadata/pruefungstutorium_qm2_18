@@ -4,14 +4,14 @@ author: "mit Tobi & Lukas"
 date: "`r format(lubridate::now(tzone = 'CET'), 'erstellt am %F um %H:%M Uhr')`"
 output:
   revealjs::revealjs_presentation:
-    mathjax: local
+    mathjax: default
     keep_md: true
     css: "assets/styles.css"
     theme: simple
     highlight: kate
     incremental: false
     transition: slide
-    widescreen: no
+    widescreen: yes
     background_transition: slide
     self_contained: false
     fig_height: 7
@@ -22,7 +22,6 @@ output:
       slideNumber: true
       progress: true
       history: true
-      center: true
   html_document:
     fig_caption: yes
     fig_width: 9
@@ -39,24 +38,25 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.path = "assets/plots/", fig.align = "center", 
                       fig.retina = 2, echo = F, warning = F, message = F)
-library(MASS)
-library(sjPlot)
-library(sjmisc)
-library(sjlabelled)
-library(dplyr)
-library(knitr)
-library(ggplot2)
-library(tadaatoolbox)
-library(magrittr)
 library(car)
-library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+library(magrittr)
+library(MASS)
+library(purrr)
 library(pwr)
+library(sjlabelled)
+library(sjmisc)
+library(sjPlot)
+library(tadaatoolbox)
+library(tidyr)
 
 # 3 digits are enough
 options(digits = 3)
 
 # selfmade ggplot-Theme laden und global setzen
-theme_set(theme_tadaa(base_size = 16))
+theme_set(theme_tadaa(base_size = 16, bg = "#ffffff"))
 ```
 
 # Na, auch hier?
@@ -74,15 +74,15 @@ theme_set(theme_tadaa(base_size = 16))
 >3. Angrenzende Theorie besprechen <small>Bonus</small>
 
 
-## {data-background="img/excited_MSS0COPq80x68.gif" data-background-size="60%"}
+## Geronimoooo! /o/ {data-background="img/excited_MSS0COPq80x68.gif" data-background-size="50%"}
 
-# Aufgabe 1
+# Aufgabe 1:<br />Zusammenhänge
 
 ## Aufgabe 1
 
-Prüfen Sie die Hypothese, ob zwischen den Merkmalen "Geschlecht" und "Abschalten" innerhalb der Grundgesamtheit aller NGO-SchülerInnen eine statistische Beziehung existiert. Lassen Sie sich bei der Ausgabe eine Kontigenztabelle mitanzeigen.
+Prüfen Sie die Hypothese, ob zwischen den Merkmalen **Geschlecht** und **Abschalten** innerhalb der Grundgesamtheit aller **NGO-Schüler\*innen** eine statistische Beziehung existiert. Lassen Sie sich bei der Ausgabe eine Kontigenztabelle mitanzeigen.
 
-<p class="fragment">**Berechnen Sie den Testwert per Hand.**</p>
+**Berechnen Sie den Testwert per Hand.**
 
 ## Aufgabe 1: Tabelle & Berechnung
 
@@ -93,6 +93,7 @@ sjt.xtab(ngo$geschl, ngo$abschalt, show.exp = TRUE,
          show.legend = TRUE, show.summary = FALSE)
 ```
 </div>
+
 <div id = "right">
 $$\begin{align}
 \chi^2 =& \sum \frac{(f_b - f_e)^2}{f_e} \\
@@ -102,20 +103,22 @@ $$\begin{align}
 \end{align}$$
 </div>
 
-# Aufgabe 2
+# Aufgabe 2:<br />ein- & zweiseitiges Testen
 
 ## Aufgabe 2
 
-Es wird davon ausgegangen, dass das Merkmal "Unterrichtsstunden" in der Grundgesamtheit der 250 NGO-SchülerInnen $\mathrm{N}(\mu, 1.5)$-verteilt ist. Es ist eine Prüfung der Nullhypothese $\mu = 33$ durchzuführen!
+Es wird davon ausgegangen, dass das Merkmal "Unterrichtsstunden" in der Grundgesamtheit der 250 NGO-Schüler\*innen $\mathrm{N}(\mu, 1.5)$-verteilt ist. Es ist eine Prüfung der Nullhypothese $\mu = 33$ durchzuführen!
 
-a) Dazu ist eine Zufallsstichprobe vom Umfang 40 zu ziehen und bezüglich der Alternativhypothese$H_1 (\mu_1 < 33)$ ein Signiﬁkanz-Test mit einem Testniveau von $\alpha = 0.05$ durchzuführen! **Erklären Sie, wie sich der Testwert ermitteln lässt.**
+a) Dazu ist eine Zufallsstichprobe vom Umfang 40 zu ziehen und bezüglich der Alternativhypothese $H_1 (\mu_1 < 33)$ ein Signiﬁkanz-Test mit einem Testniveau von $\alpha = 0.05$ durchzuführen! **Erklären Sie, wie sich der Testwert ermitteln lässt.**
 
 b) Zu welchem Ergebnis würde der Inferenzschluss führen, wenn anstelle des _einseitigen_ Tests ein _zweiseitiger_ Test zur Prüfung der Hypothese $\mu = 33$ zu erfolgen hätte?
 
-## Aufgabe 2: Stichprobe ziehen, Testwert bestimmen
+## Aufgabe 2a: 
+
+**Stichprobe ziehen, Testwert bestimmen**
 
 ```{r}
-set.seed(2)
+set.seed(2) # Hashtag Determinismus
 a02_mean <- ngo %>% sample_n(40) %>% pull(stunzahl) %>% mean
 ```
 
@@ -134,8 +137,7 @@ z \approx& {\color{red}{\underline{\underline{`r round((a02_mean - 33) / (1.5/sq
 
 ## Aufgabe 2a: Inferenzschluss in bunt
 
-bei $\alpha = 5\%$, einseitig:  
-Kritischer Wert: *-1.64*
+_Kritischer Wert_ bei $\alpha = 5\%$, einseitig: -1.64
 
 ```{r a02a_bunt}
 ztest <- (a02_mean - 33) / (1.5 / sqrt(40))
@@ -154,7 +156,29 @@ ggplot(data = NULL, aes(x = -3.3:3.3)) +
   theme_readthedown(base_family = "Palatino")
 ```
 
-# Aufgabe 3: A priori: t-Test (einseitig)
+## Aufgabe 2b: same same, but zweiseitig
+
+_Kritischer Werte_ bei $\alpha = 5\%$, zweiseitig: -1.96 & 1.96
+
+```{r a02b_bunt}
+ggplot(data = NULL, aes(x = -3.3:3.3)) +
+  stat_function(fun = dnorm, geom = "density", color = "black") +
+  geom_vline(aes(xintercept = c(qnorm(.025), qnorm(.975))), color = "red") +
+  geom_vline(aes(xintercept = ztest), color = "blue") +
+  annotate("label", x = qnorm(.025), y = 0.35, color = "dark red", size = 5,
+           hjust = 1,
+           label = paste("z[krit]", "==", round(qnorm(.025), 2)), parse = T) +
+  annotate("label", x = qnorm(.975), y = 0.35, color = "dark red", size = 5,
+           hjust = 0,
+           label = paste("z[krit]", "==", round(qnorm(.975), 2)), parse = T) +
+  annotate("label", x = ztest, y = 0.25, color = "dark blue", size = 7,
+           hjust = 0,
+           label = paste("z[test]", "==", round(ztest, 2)), parse = T) +
+  labs(x = NULL, y = NULL) +
+  theme_readthedown(base_family = "Palatino")
+```
+
+# Aufgabe 3:<br />Poweranalyse (einsitiger t-Test)
 
 ## Aufgabe 3
 
@@ -169,12 +193,14 @@ ggplot(data = NULL, aes(x = -4:7)) +
   geom_area(aes(x = seq(1.64, 7, .01), y = dnorm(seq(1.64, 7, .01), 3)), fill = "red", alpha = .4) +
   geom_area(aes(x = seq(1.64, 7, .01), y = dnorm(seq(1.64, 7, .01))), fill = "blue", alpha = .4) +
   geom_area(aes(x = seq(-4, 1.64, .01), y = dnorm(seq(-4, 1.64, .01))), fill = "green", alpha = .4) +
+  geom_area(aes(x = seq(-1, 1.64, .01), y = dnorm(seq(-1, 1.64, .01), 3)), fill = "orange", alpha = .4) +
   scale_x_continuous(breaks = seq(-5, 10, 1)) + 
   annotate("text", x = 0, y = .2, label = "H[0]", parse = TRUE, size = 6, family = "Palatino") +
   annotate("text", x = 3, y = .2, label = "H[1]", parse = TRUE, size = 6, family = "Palatino") +
-  annotate("text", x = 0, y = .1, label = "1-alpha", parse = TRUE, size = 4, family = "Palatino") +
+  annotate("text", x = 0, y = .1, label = "1-alpha", parse = TRUE, size = 6, family = "Palatino") +
   annotate("text", x = 3, y = .1, label = "1-beta", parse = TRUE, size = 6, family = "Palatino") +
   annotate("text", x = 2, y = .025, label = "alpha", parse = TRUE, size = 4, family = "Palatino") +
+  annotate("text", x = 1.1, y = .025, label = "beta", parse = TRUE, size = 4, family = "Palatino") +
   labs(x = "x", y = expression(P(x)), title = expression("N(0,1) & N(3,1)")) + 
   theme_readthedown(base_family = "Palatino") + 
   theme(panel.grid.major = element_line(size = 0.1), 
@@ -184,10 +210,22 @@ ggplot(data = NULL, aes(x = -4:7)) +
 ## Aufgabe 3: A priori (Code)
 
 ```{r a03_solution, echo = T}
-pwr.t.test(d = -0.6, sig.level = 0.05, power = 1 - 0.15, type = "one.sample", alternative = "less")
+pwr.t.test(d = -0.6, sig.level = 0.05, power = 1 - 0.15, 
+           type = "one.sample", alternative = "less")
 ```
 
-# Aufgabe 4: Konfidenzintervalle
+## Aufgabe 3: Needs Rechnung zu Fuss
+
+## Aufgabe 3: Ch-ch-changes
+
+Wie **verändert** sich der optimale Stichprobenumfang, wenn Sie $\beta$ _erhöhen_ oder wenn die Effektgröße _verringert_ wird? Warum ist das so?
+
+<p class="fragment">Wenn Beta _steigt_, dann _____ n.</p>
+<p class="fragment">Wenn die Effektgröße _sinkt_, dann _____ n.</p>
+
+<p class="fragment big">BUT WHY?!? ლ(ಠ_ಠლ)</p>
+
+# Aufgabe 4:<br />Konfidenzintervalle
 
 ## Aufgabe 4
 
@@ -195,11 +233,13 @@ Für die aus einer Zufallsauswahl vom Umfang **36** resultierenden Werte eines *
 
 ## Aufgabe 4: Berechnung
 
-- $w_{krit} \approx `r qnorm(0.975)`$
+${CI} = \bar{x} \pm \sigma_\bar{x} \cdot w_{krit}$
+
+- $w_{krit} \approx `r qnorm(0.975)`$ (bei $\alpha$ = 5%)
 - $CI_{lower} = 33 - 1.2 \cdot `r round(qnorm(0.975), 3)` \approx `r 33 - 1.2 * qnorm(0.975)`$
 - $CI_{upper} = 33 + 1.2 \cdot `r round(qnorm(0.975), 3)` \approx `r 33 + 1.2 * qnorm(0.975)`$
 
-```{r a04_plot, fig.height= 3, fig.width=7}
+```{r a04_plot1, fig.height= 3, fig.width=7}
 ki <- c(33 - 1.2 * qnorm(0.975), 33 + 1.2 * qnorm(0.975))
 df <- data_frame(x = seq(29, 37, .01), y = dnorm(x, mean = 33, sd = 1.2))
 
@@ -218,6 +258,32 @@ ggplot(data = df, aes(x = x, y = y)) +
   theme_readthedown()
 ```
 
+## Wat issen Konfidenzintervall
+
+```{r a04_plot2}
+tenk <- rnorm(10000, 100, 15)
+
+map_df(seq_len(20), function(x){
+  tibble(smpl = x, val = sample(tenk, 100))
+  }) %>% 
+  group_by(smpl) %>% 
+  summarise(
+    mean  = mean(val),
+    upper = mean + (sd(val)/sqrt(100)) * 1.96,
+    lower = mean - (sd(val)/sqrt(100)) * 1.96
+  ) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = smpl, y = mean, ymin = lower, ymax = upper)) +
+    geom_hline(aes(color = "true population mean", yintercept = mean(tenk)), lty = "dotdash") +
+    geom_pointrange(size = .4, shape = 23, fill = "white") +
+    scale_y_continuous(limits = c(90, 110)) +
+    scale_color_manual(values = "red") +
+    labs(color = NULL, x = "Stichprobe", y = "IQ",
+         title = "95%-Konfidenzintervalle", subtitle = "n = 100 für alle Stichproben") +
+    coord_flip() +
+    theme(legend.position = "top")
+```
+
 # Aufgabe 5
 
 ## Aufgabe 5
@@ -230,30 +296,30 @@ Berechnen Sie einen geeigneten Test für die Fragestellung, ob die Verteilungen 
 
 ## Aufgabe 6
 
-a) Die Hypothese, dass es für die Schülerinnen keine jahrgangsstufenspeziﬁschen Unterschiede im Hinblick auf die Anzahl von Wochentagen gibt, an denen für das Fach „Deutsch“ gelernt wird, ist mit den für die NGO-SchülerInnen erhobenen Daten teststatistisch zu prüfen!
+a) Die Hypothese, dass es für die Schüler\*innen keine jahrgangsstufenspeziﬁschen Unterschiede im Hinblick auf die Anzahl von Wochentagen gibt, an denen für das Fach „Deutsch“ gelernt wird, ist mit den für die NGO-Schüler\*innen erhobenen Daten teststatistisch zu prüfen!
 
 b) Falls ein signiﬁkantes Testergebnis vorliegt, ist die empirische Eﬀektgröße zu ermitteln und zu überprüfen, zwischen welchen Jahrgängen Unterschiede bestehen könnten!
 
 # Aufgabe 7
 ## Aufgabe 7
 
-In 3 Kursen (A, B, C) der 11. Jahrgangsstufe werden Schüler und Schülerinnen nach unterschiedlichen Methoden unterrichtet. Aus jedem der 3 Kurse werden jeweils 9 SchülerInnen durch eine Zufallsauswahl bestimmt. Bei einem abschließenden Leistungstest werden die folgenden Ergebnisse erzielt:
+In 3 Kursen (A, B, C) der 11. Jahrgangsstufe werden Schüler und Schüler\*innen nach unterschiedlichen Methoden unterrichtet. Aus jedem der 3 Kurse werden jeweils 9 Schüler\*innen durch eine Zufallsauswahl bestimmt. Bei einem abschließenden Leistungstest werden die folgenden Ergebnisse erzielt:
 
-SchülerInnen des Kurses A: `10, 19, 21, 24, 22, 16, 11, 21, 19`
-SchülerInnen des Kurses B: `16, 19, 18, 16, 11, 19, 19, 16, 21`
-SchülerInnen des Kurses C: `22, 17, 12, 20, 16, 21, 22, 11, 21`
+Schüler\*innen des Kurses A: `10, 19, 21, 24, 22, 16, 11, 21, 19`
+Schüler\*innen des Kurses B: `16, 19, 18, 16, 11, 19, 19, 16, 21`
+Schüler\*innen des Kurses C: `22, 17, 12, 20, 16, 21, 22, 11, 21`
 
 Wenden Sie einen geeigneten Test an.
 
 # Aufgabe 8
 ## Aufgabe 8
 
-Auf dem Testniveau "=0,05" ist zu prüfen, ob bei den Schülerinnen Mittelwertunterschiede bei den Merkmalen "Mathe" und "Deutsch" festzustellen sind! Dazu ist zu unterstellen, dass beide Merkmale innerhalb der Grundgesamtheit der 125 NGO-Schülerinnen normalverteilt sind! Es ist ein zweiseitiger Test durchzuführen und der Stichprobenumfang so zu wählen, dass ein mittlerer Effekt mit einer Wahrscheinlichkeit von mindestens „0,85“ aufgedeckt werden kann. Wie viele Stichprobenelemente wären für die Durchführung eines einseitigen Tests angemessen gewesen?
+Auf dem Testniveau "=0,05" ist zu prüfen, ob bei den Schüler\*innen Mittelwertunterschiede bei den Merkmalen "Mathe" und "Deutsch" festzustellen sind! Dazu ist zu unterstellen, dass beide Merkmale innerhalb der Grundgesamtheit der 125 NGO-Schüler\*innen normalverteilt sind! Es ist ein zweiseitiger Test durchzuführen und der Stichprobenumfang so zu wählen, dass ein mittlerer Effekt mit einer Wahrscheinlichkeit von mindestens „0,85“ aufgedeckt werden kann. Wie viele Stichprobenelemente wären für die Durchführung eines einseitigen Tests angemessen gewesen?
 
 # Aufgabe 9
 ## Aufgabe 9
 
-Auf dem Testniveau von "=0,01" ist zu prüfen, ob geschlechtsspeziﬁsche Mittelwertunterschiede beim Merkmal "Deutsch" festzustellen sind! Dazu ist zu unterstellen, dass das Merkmal "Deutsch" innerhalb der beiden Grundgesamtheiten der jeweiligen 125 NGO-Schüler und Schülerinnen normalverteilt ist! Zur Prüfung der zweiseitigen Fragestellung ist der Umfang der beiden Zufallsstichproben so zu wählen, dass ein durch die Eﬀektgröße „0,9“ beschriebener Eﬀekt mit einer Wahrscheinlichkeit von mindestens „0,85“ aufgedeckt werden kann! Wie berechnet sich der Testwert?
+Auf dem Testniveau von "=0,01" ist zu prüfen, ob geschlechtsspeziﬁsche Mittelwertunterschiede beim Merkmal "Deutsch" festzustellen sind! Dazu ist zu unterstellen, dass das Merkmal "Deutsch" innerhalb der beiden Grundgesamtheiten der jeweiligen 125 NGO-Schüler und Schüler\*innen normalverteilt ist! Zur Prüfung der zweiseitigen Fragestellung ist der Umfang der beiden Zufallsstichproben so zu wählen, dass ein durch die Eﬀektgröße „0,9“ beschriebener Eﬀekt mit einer Wahrscheinlichkeit von mindestens „0,85“ aufgedeckt werden kann! Wie berechnet sich der Testwert?
 
 # Aufgabe 10
 ## Aufgabe 10
@@ -264,7 +330,7 @@ b) Welche Voraussetzungen sind zu erfüllen, damit eine 2-faktorielle Varianzana
 
 c) Welche Feststellungen lassen sich – auf der Basis eines Testniveaus von "=0,05" - über potentiell wirksame Eﬀekte treﬀen?
 
-d) Wie viele SchülerInnen wären für jede der 6 Zellen des Versuchsplans erforderlich gewesen, um – auf der Basis des Testniveaus "=0,05" - einen tatsächlich vorliegenden, nach Cohen als „stark“ taxierten Interaktionseﬀekt mit einer Mindest-Teststärke von „0,8“ „aufdecken“ zu können?
+d) Wie viele Schüler\*innen wären für jede der 6 Zellen des Versuchsplans erforderlich gewesen, um – auf der Basis des Testniveaus "=0,05" - einen tatsächlich vorliegenden, nach Cohen als „stark“ taxierten Interaktionseﬀekt mit einer Mindest-Teststärke von „0,8“ „aufdecken“ zu können?
 
 # Aufgabe 11
 ## Aufgabe 11
