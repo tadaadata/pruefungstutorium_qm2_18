@@ -353,11 +353,12 @@ Wobei für $s_{\bar{x_1} - \bar{x_2}}$ gilt:
 
 $$s_{\bar{x}_1 - \bar{x}_2} = \sqrt{S^2_p \left(\frac{1}{n_1} + \frac{1}{n_2}\right)}$$
 
-<div class="col2">
+<div id="left">
 _n_ gleich groß:
 
 $$s^2_p = \frac{s^2_1 + s^2_2}{2}$$
-
+</div>
+<div id="right">
 _n_ ungleich:
 
 $$s^2_p = \frac{(n_1 - 1)s^2_1 + (n_2 - 1)s^2_2}{(n_1 - 1) + (n_2 - 1)}$$
