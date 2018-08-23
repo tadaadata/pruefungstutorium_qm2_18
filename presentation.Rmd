@@ -592,7 +592,7 @@ $\Delta = 0.5$
 $$\begin{align}
 n \geq& \frac{\left(z_{1-\beta} - z_\alpha \right)^2}{\Delta} \\
 n \geq& \frac{\left(1.04 - \left(-1.96 \right)\right)^2}{0.5^2} \\
-n \geq& \frac{9}{0.25} \approx \underline{\underline{38}}
+n \geq& \frac{9}{0.25} \approx \underline{\underline{36}}
 \end{align}$$
 
 ## Überprüfung in _R_
@@ -639,7 +639,7 @@ pwr.t.test(power = .85, d = .9)
 
 ## "per Hand"
 
-
+...2 mal das gleiche reicht, oder?
 
 ## Überprüfung in _R_
 
