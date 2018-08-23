@@ -294,6 +294,11 @@ map_df(seq_len(20), function(x){
 
 Berechnen Sie einen geeigneten Test für die Fragestellung, ob die Verteilungen des Alkoholkkonsums bei ernährungsbewussten StudentInnen (Vegetarier) und der ﬂeischkonsumierenden StudentInnen gleich sind. Prüfen Sie einseitig die Annahme, dass die Tatsache Vegetarier zu sein, sich positiv auf einen geringeren Alkoholkonsum auswirkt. Wie kommt der resultierende Testwert zustande?
 
+<div class="fragment">
+$H_0\text{: }$ die Ernährungsart hat keinen Einfluss auf den Alkoholkonsum  
+$H_1\text{: }$ Vegetarier*innen konsumieren weniger Alkohol als Omnivore
+</div>
+
 ## {data-background="https://tobi.tadaa-data.de/qm/pics/nhst_wahl.png" data-background-size="60%"}
 
 ## Normalverteilung?
@@ -372,6 +377,84 @@ a) Die Hypothese, dass es für die Schüler\*innen keine jahrgangsstufenspeziﬁ
 
 b) Falls ein signiﬁkantes Testergebnis vorliegt, ist die empirische Eﬀektgröße zu ermitteln und zu überprüfen, zwischen welchen Jahrgängen Unterschiede bestehen könnten!
 
+## Testvorraussetzungen
+
+```{r a06_nortest}
+sw_p  <- pval_string(shapiro.test(ngo$deutsch)$p.value)
+lev_p <- pval_string(leveneTest(deutsch ~ jahrgang, ngo)$`Pr(>F)`[1])
+```
+
+<div class="fragment">
+Test          | _p_-Wert
+--------------|-----------
+Shapiro-Wilk  | `r sw_p`
+Levene        | `r lev_p`
+
+<div id="left">
+```{r a06_hist, fig.height= 3, fig.width=5}
+ggplot(ngo, aes(deutsch)) +
+  geom_histogram(color = "white", bins = 11) +
+  labs(x = "Tage", y = "Anzahl")
+```
+</div>
+
+<div id="right">
+```{r a06_qq, fig.height= 3, fig.width=5}
+ggplot(ngo, aes(sample = deutsch)) +
+  geom_qq(shape = 21, size = 2, alpha = .6) + 
+  # geom_abline(color = "blue", lty = "dotdash", alpha = .6) +
+  stat_qq_line(color = "red") +
+  labs(y = "empir. Verteilung (Tage)", 
+       x = 'theor. Verteilung ("z-Tage")')
+```
+</div>
+
+</div>
+
+## Testwahl:
+
+<div class="fragment">
+**Anova! Anova!**
+
+![](./img/jehova.gif)
+
+```{r a06_aov}
+tadaa_aov(deutsch ~ jahrgang, ngo, print = "markdown")
+```
+</div>
+
+## Post-Hoc Tests
+
+_Welches Schweinderl hätten's denn gern?_
+
+<div class="fragment">
+  <div class="col2">
+  - Fisher LSD
+  - Bonferroni
+  - Sheffé
+  
+  <br />
+  
+  - Tukey HSD
+  - Holm
+  - EMMs
+  </div>
+</div>
+
+<div class="fragment">
+```{r a06_posthoc}
+tadaa_pairwise_t(ngo, deutsch, jahrgang, p.adjust = "holm") %>%
+  dplyr::rename("Faktor" = term, "Vergleich" = comparison,
+                "angepasstes p" = adj.p.value) %>%
+  mutate(
+    Faktor = str_to_title(Faktor),
+    `angepasstes p` = pval_string(`angepasstes p`)
+  ) %>%
+  knitr::kable(format = "html", 
+               caption = "**Beispiel:<br>** paarweise t-Tests mit _Holm_-Korrektur") 
+```
+</div>
+
 # Aufgabe 7:<br />Tagelang nur NHST.
 
 ## Aufgabe 7
@@ -384,35 +467,234 @@ Schüler\*innen des Kurses C: `22, 17, 12, 20, 16, 21, 22, 11, 21`
 
 Wenden Sie einen geeigneten Test an¹.
 
+```{r a07_df}
+kurse <- data.frame(A = c(10, 19, 21, 24, 22, 16, 11, 21, 19),
+                    B = c(16, 19, 18, 16, 11, 19, 19, 16, 21),
+                    C = c(22, 17, 12, 20, 16, 21, 22, 11, 21)) %>% 
+  gather(Kurs, Ergebnis, A, B, C)
+```
+
 <br /><br />
 <p class="small">¹ Anm. der Redaktion: _"...um zu überprüfen, ob sich die Testergebnise Unterscheiden."_</p>
 
-# Aufgabe 8
+## Same old: Vorraussetzungen
+
+```{r a07_nortest}
+sw_p_07  <- pval_string(shapiro.test(kurse$Ergebnis)$p.value)
+lev_p_07 <- pval_string(leveneTest(Ergebnis ~ Kurs, kurse)$`Pr(>F)`[1])
+```
+
+<div class="fragment">
+Test          | _p_-Wert
+--------------|-----------
+Shapiro-Wilk  | `r sw_p_07`
+Levene        | `r lev_p_07`
+
+<div id="left">
+```{r a07_hist, fig.height= 3, fig.width=5}
+ggplot(kurse, aes(Ergebnis)) +
+  geom_histogram(color = "white", bins = 11) +
+  labs(x = "Punktzahl", y = "Anzahl")
+```
+</div>
+
+<div id="right">
+```{r a07_qq, fig.height= 3, fig.width=5}
+ggplot(kurse, aes(sample = Ergebnis)) +
+  geom_qq(shape = 21, size = 2, alpha = .6) + 
+  # geom_abline(color = "blue", lty = "dotdash", alpha = .6) +
+  stat_qq_line(color = "red") +
+  labs(y = "empirisch (Punkte)", 
+       x = 'theoretisch ("z-Punkte")')
+```
+</div>
+
+</div>
+
+## Testwahl
+
+```{r a07_aov}
+tadaa_aov(Ergebnis ~ Kurs, kurse, print = "markdown")
+```
+
+<div class="fragment">
+zur Absicherung: Kruskal-Wallis
+
+```{r a07_kw}
+kruskal.test(Ergebnis ~ factor(Kurs), kurse) %>% 
+  broom::tidy() %>% 
+  transmute(
+    Testwert = statistic,
+    df       = parameter,
+    p        = p.value
+  ) %>% 
+  knitr::kable(format = "html",
+               caption = "Kruskal-Wallis Rangsummentest")
+```
+
+¯\\\_(ツ)\_/¯
+</div>
+
+# Aufgabe 8:<br />Poweranalyse & optimales _n_
 
 ## Aufgabe 8
 
-Auf dem Testniveau "$\alpha$ = 0,05" ist zu prüfen, ob bei den Schüler\*innen Mittelwertunterschiede bei den Merkmalen "Mathe" und "Deutsch" festzustellen sind! Dazu ist zu unterstellen, dass beide Merkmale innerhalb der Grundgesamtheit der 125 NGO-Schüler\*innen normalverteilt sind! Es ist ein zweiseitiger Test durchzuführen und der Stichprobenumfang so zu wählen, dass ein mittlerer Effekt mit einer Wahrscheinlichkeit von mindestens „0,85“ aufgedeckt werden kann. Wie viele Stichprobenelemente wären für die Durchführung eines einseitigen Tests angemessen gewesen?
+Auf dem Testniveau "$\alpha$ = 0,05" ist zu prüfen, ob bei den Schülerinnen Mittelwertunterschiede bei den Merkmalen "Mathe" und "Deutsch" festzustellen sind! Dazu ist zu unterstellen, dass beide Merkmale innerhalb der Grundgesamtheit der 125 NGO-Schülerinnen normalverteilt sind! Es ist ein zweiseitiger Test durchzuführen und der Stichprobenumfang so zu wählen, dass ein mittlerer Effekt mit einer Wahrscheinlichkeit von mindestens "0,85" aufgedeckt werden kann. Wie viele Stichprobenelemente wären für die Durchführung eines einseitigen Tests angemessen gewesen?
 
-# Aufgabe 9
+<div class="fragment">
+- **Welches Testverfahren wollen wir anwenden?**
+- **Welche Werte haben wir schon?**
+- **Welche brauchen wir noch?**
+</div>
+
+## Optimales _n_
+
+**Zweiseitig:**
+
+```{r a08_n_twosie}
+pwr.t.test(power = .85, d = .5, type = "paired")
+```
+
+**Einseitig:**
+
+```{r a08_n_onesie}
+pwr.t.test(power = .85, d = .5, type = "paired", alternative = "greater")
+```
+
+## "per Hand"
+
+
+
+## Überprüfung in _R_
+
+**Stichprobe:**
+
+```{r a08_sample}
+ngo %>% 
+  filter(geschl == "Weiblich") %>% 
+  sample_n(38) %>% 
+  gather(fach, std, mathe, deutsch) %>% 
+  tadaa_t.test(., std, fach, paired = TRUE, print = "markdown")
+```
+
+**Population:**
+
+```{r a08_population}
+ngo %>% 
+  filter(geschl == "Weiblich") %>% 
+  gather(fach, std, mathe, deutsch) %>% 
+  tadaa_t.test(., std, fach, paired = TRUE, print = "markdown")
+```
+
+
+# Aufgabe 9:<br />Poweranalyse & optimales _n_
+
 ## Aufgabe 9
 
-Auf dem Testniveau von "=0,01" ist zu prüfen, ob geschlechtsspeziﬁsche Mittelwertunterschiede beim Merkmal "Deutsch" festzustellen sind! Dazu ist zu unterstellen, dass das Merkmal "Deutsch" innerhalb der beiden Grundgesamtheiten der jeweiligen 125 NGO-Schüler und Schüler\*innen normalverteilt ist! Zur Prüfung der zweiseitigen Fragestellung ist der Umfang der beiden Zufallsstichproben so zu wählen, dass ein durch die Eﬀektgröße „0,9“ beschriebener Eﬀekt mit einer Wahrscheinlichkeit von mindestens „0,85“ aufgedeckt werden kann! Wie berechnet sich der Testwert?
+Auf dem Testniveau von $\alpha$=0,01 ist zu prüfen, ob geschlechtsspeziﬁsche Mittelwertunterschiede beim Merkmal "Deutsch" festzustellen sind! Dazu ist zu unterstellen, dass das Merkmal "Deutsch" innerhalb der beiden Grundgesamtheiten der jeweiligen 125 NGO-Schüler und Schüler\*innen normalverteilt ist! Zur Prüfung der zweiseitigen Fragestellung ist der Umfang der beiden Zufallsstichproben so zu wählen, dass ein durch die Eﬀektgröße "0,9" beschriebener Eﬀekt mit einer Wahrscheinlichkeit von mindestens "0,85" aufgedeckt werden kann! Wie berechnet sich der Testwert?
 
-# Aufgabe 10
+<div class="fragment">
+- **Welches Testverfahren wollen wir anwenden?**
+- **Welche Werte haben wir schon?**
+- **Welche brauchen wir noch?**
+</div>
+
+## Optimales _n_
+
+**Zweiseitig:**
+
+```{r a09_n_opti}
+pwr.t.test(power = .85, d = .9)
+```
+
+## "per Hand"
+
+
+
+## Überprüfung in _R_
+
+**Stichprobe:**
+
+```{r a09_sample}
+ngo %>% 
+  group_by(geschl) %>% 
+  sample_n(24) %>% 
+  ungroup() %>% 
+  tadaa_t.test(., deutsch, geschl, paired = TRUE, print = "markdown")
+```
+
+**Population:**
+
+```{r a09_population}
+tadaa_t.test(ngo, deutsch, geschl, paired = TRUE, print = "markdown")
+```
+
+
+# Aufgabe 10:<br >ANOVA Brick In The Wall
+
 ## Aufgabe 10
 
-a) Es ist zu prüfen, ob die These „Das Geschlecht und die Jahrgangsstufe üben einen Interaktionseﬀekt auf „Deutsch“ aus, und das Geschlecht wirkt nicht als Haupteﬀekt.“ akzeptabel ist!
+a) Es ist zu prüfen, ob die These "Das Geschlecht und die Jahrgangsstufe üben einen Interaktionseﬀekt auf 'Deutsch' aus und das Geschlecht wirkt nicht als Haupteﬀekt" akzeptabel ist!
 
 b) Welche Voraussetzungen sind zu erfüllen, damit eine 2-faktorielle Varianzanalyse durchgeführt werden kann?
 
-c) Welche Feststellungen lassen sich – auf der Basis eines Testniveaus von "=0,05" - über potentiell wirksame Eﬀekte treﬀen?
+c) Welche Feststellungen lassen sich – auf der Basis eines Testniveaus von $\alpha$=0,05 - über potentiell wirksame Eﬀekte treﬀen?
 
-d) Wie viele Schüler\*innen wären für jede der 6 Zellen des Versuchsplans erforderlich gewesen, um – auf der Basis des Testniveaus "=0,05" - einen tatsächlich vorliegenden, nach Cohen als „stark“ taxierten Interaktionseﬀekt mit einer Mindest-Teststärke von „0,8“ „aufdecken“ zu können?
+d) Wie viele Schüler\*innen wären für jede der 6 Zellen des Versuchsplans erforderlich gewesen, um – auf der Basis des Testniveaus $\alpha$=0,05 - einen tatsächlich vorliegenden, nach Cohen als "stark" taxierten Interaktionseﬀekt mit einer Mindest-Teststärke von "0,8" "aufdecken" zu können?
+
+## Pre-Test & ANOVA (b, c)
+
+Vorraussetzung      | Test          | p-Wert
+--------------------|---------------|----------
+Normalverteilung    | Shapiro-Wilk  | `r shapiro.test(ngo$deutsch)$p.value`  
+Varianzhomogenität  | Levene        | `r leveneTest(deutsch ~ geschl * jahrgang, data = ngo)$Pr[1]`
+
+```{r a10_aov}
+tadaa_aov(deutsch ~ geschl * jahrgang, ngo, print = "markdown") 
+```
+
+## Interaktionsdiagramm (a)
+
+```{r a10_int}
+tadaa_int(ngo, deutsch, geschl, jahrgang, grid = TRUE)
+```
+
+## Klassifikation von Effektgrößen nach Cohen (1977)
+
+Effektgröße | klein | mittel  | groß  | Anwendung
+------------|-------|---------|-------|------------
+Cohen's $d$ | .2    | .5      | .8    | t-Test
+$\phi$      | .1    | .3      | .5    | $\chi^2$-Test
+$r$         | .1    | .3      | .5    | Korrelation
+$R^2$       | .0196 | .15     | .26   | Regression
+$\eta^2_p$  | .01   | .0588   | .138  | ANOVA
+
+**Vorsicht:** Cohen selbst erwähnt bei jeder sich bietenden Gelegenheit, dass es sich hierbei um _rein rechnerische_ Faustregeln handelt, die im jeweilig betrachteten Kontext _**stark abweichen**_ können!
+
+## A priori Anova (d)
+
+Effektgröße für die Software ist: $f = \sqrt{\frac{\eta^2}{1 - \eta^2}}$  
+Gilt für G*Power sowie die R-funktionen aus dem `pwr` package!
+
+```{r a10_apriori, echo = TRUE}
+pwr.anova.test(k = 6, f = sqrt(0.14 / (1 - 0.14)), sig.level = 0.05, power = 0.8)
+```
 
 # Aufgabe 11
+
 ## Aufgabe 11
 
-Wählen Sie selbst für Sie interessante Variablen einmal für eine Varianzanalyse, einmal für den Kruskal-Wallis-Test & einmal für den Wilcoxon-Test aus dem Psychologie-Datensatz aus und interpretieren Sie die Daten.
+Wählen Sie selbst für Sie interessante Variablen einmal für eine Varianzanalyse, einmal für den Kruskal-Wallis-Test & einmal für den Wilcoxon-Test aus dem Psychologie²-Datensatz aus und interpretieren Sie die Daten.
+
+<br /><br />
+
+<div class="small">
+² gemeint ist natürlich die große qm-survey
+</div>
+
+## Anova
+
+
 
 # Aufgabe 12
 
@@ -420,11 +702,14 @@ Wählen Sie selbst für Sie interessante Variablen einmal für eine Varianzanaly
 
 Nennen Sie die Voraussetzungen aller behandelter Signifikanztests und ihrer Teststatistiken. Erstellen Sie hierzu eine Übersicht. Schauen Sie sich Ausgabetabellen aller Signifikanztests an und legen Sie fest, was einzelne Werte aussagen, wie sie ggfs. berechnet werden und wie im Besonderen Testwerte zustande kommen.
 
+## lolnein.
+
 # Aufgabenblock: Berechnungen per Hand
 
 Meeeeeh
 
-# Aufgabe 13 
+# Aufgabe 13:<br />F-Test
+
 ## Aufgabe 13
 
 Berechnen Sie auf Basis folgender Daten die Binnenvarianz, die Treatmentvarianz, den F-Wert und den kritischen Wert:
@@ -434,11 +719,13 @@ Berechnen Sie auf Basis folgender Daten die Binnenvarianz, die Treatmentvarianz,
 Zu welchem Inferenzschluss gelangen Sie?
 
 # Aufgabe 14 
+
 ## Aufgabe 14
 
 Sie haben folgende Testwerte von 6 frühgeborenen Kindern bezüglich ihrer motorischen Fähigkeiten vorliegen: 7, 8, 11, 9, 8, 10. Welches Intervall enthält mit einer Mutmaßlichkeit von 99% den wahren Mittelwert der motorischen Fähigkeiten? Erklären Sie: Wie ist es möglich anhand des Konﬁdenzintervalls eine Aussage über die Mutmaßlichkeeit einer Mitte zu treﬀen?
 
 # Aufgabe 15 
+
 ## Aufgabe 15
 
 Nutzen Sie die Standardnormalverteilungstabelle in Studip. Wiederholen Sie die Kenntnisse aus der Deskriptiven Statistik, indem Sie die Wahrscheinlichkeiten von Werten in folgenden Bereichen berechnen:
@@ -446,6 +733,7 @@ Nutzen Sie die Standardnormalverteilungstabelle in Studip. Wiederholen Sie die K
 a) Wie wahrscheinlich ist es, dass Werte im Bereich 2 bis 2,5; im Bereich 0,75 bis 1,3 und $-\infty$ bis -0,2 liegen?
 
 # Aufgabe 16
+
 ## Aufgabe 16
 
 10 Frauen in der Alterskategorie 40+ wurden in einer Studie über ihre sportlichen Aktivitäten befragt. Jede dieser Frauen war in den letzten Monaten als Mitglied im Fitnessstudio registriert. Berechnen Sie auf Basis der nachfolgenden Daten den Standardfehler und die Standardabweichung. Vergleichen Sie die Werte.
