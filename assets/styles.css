@@ -131,7 +131,7 @@ table {
 
 .reveal section pre code {
   size: 70%;
-  font-size: 0.8;
+  font-size: 0.8em;
 }
 
 /* For when you need something big */
