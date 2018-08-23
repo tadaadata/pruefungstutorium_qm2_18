@@ -557,7 +557,7 @@ kruskal.test(Ergebnis ~ factor(Kurs), kurse) %>%
 
 ## Aufgabe 8
 
-Auf dem Testniveau "$\alpha$ = 0,05" ist zu prüfen, ob bei den Schülerinnen Mittelwertunterschiede bei den Merkmalen "Mathe" und "Deutsch" festzustellen sind! Dazu ist zu unterstellen, dass beide Merkmale innerhalb der Grundgesamtheit der 125 NGO-Schülerinnen normalverteilt sind! Es ist ein zweiseitiger Test durchzuführen und der Stichprobenumfang so zu wählen, dass ein mittlerer Effekt mit einer Wahrscheinlichkeit von mindestens "0,85" aufgedeckt werden kann. Wie viele Stichprobenelemente wären für die Durchführung eines einseitigen Tests angemessen gewesen?
+Auf dem Testniveau "$\alpha$ = 0,05" ist zu prüfen, ob bei den Schülerinnen Mittelwertunterschiede bei den Merkmalen "Mathe" und "Deutsch" festzustellen sind! Dazu ist zu unterstellen, dass beide Merkmale innerhalb der Grundgesamtheit der 125 NGO-Schülerinnen normalverteilt sind! Es ist ein zweiseitiger Test durchzuführen und der Stichprobenumfang so zu wählen, dass ein mittlerer Effekt mit einer Wahrscheinlichkeit von mindestens **0,85** aufgedeckt werden kann. Wie viele Stichprobenelemente wären für die Durchführung eines einseitigen Tests angemessen gewesen?
 
 <div class="fragment">
 - **Welches Testverfahren wollen wir anwenden?**
@@ -581,7 +581,19 @@ pwr.t.test(power = .85, d = .5, type = "paired", alternative = "greater")
 
 ## "per Hand"
 
+Selbes Spiel wie vorhin, für **zweiseitig** nehmen wir $\frac{\alpha}{2}$
 
+$$n \geq \frac{\left(z_{1-\beta} - z_{\frac{\alpha}{2}} \right)^2}{\Delta^2}$$
+
+$z_{1-\beta} = z_{1-0.15} = z_{0.85} \approx 1.04$
+$z_\alpha = z_{0.025} \approx -1.96$
+$\Delta = 0.5$
+
+$$\begin{align}
+n \geq& \frac{\left(z_{1-\beta} - z_\alpha \right)^2}{\Delta} \\
+n \geq& \frac{\left(1.04 - \left(-1.96 \right)\right)^2}{0.5^2} \\
+n \geq& \frac{9}{0.25} \approx \underline{\underline{38}}
+\end{align}$$
 
 ## Überprüfung in _R_
 
