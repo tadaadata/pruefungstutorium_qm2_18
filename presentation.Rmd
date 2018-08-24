@@ -734,7 +734,7 @@ Nennen Sie die Voraussetzungen aller behandelter Signifikanztests und ihrer Test
 
 ## lolnein.
 
-# Aufgabenblock: Berechnungen per Hand
+# Aufgabenblock:<br />Berechnungen per Hand
 
 Meeeeeh
 
@@ -748,11 +748,87 @@ Berechnen Sie auf Basis folgender Daten die Binnenvarianz, die Treatmentvarianz,
 
 Zu welchem Inferenzschluss gelangen Sie?
 
-# Aufgabe 14 
+## Formeln
+
+<div id="left">
+Binnenvarianz $MS_{within}$:  
+
+$$\sum_{j=1}^k \sum_{i=1}^n \frac{(x_{i, j} - \bar{x_j})^2}{n - k}$$
+
+Treatmentvarianz $MS_{between}$:  
+
+$$\sum_{j=1}^k n_j \frac{(x_{j} - \bar{x})^2}{k -1}$$
+</div>
+
+<div id="right">
+F-Wert:  
+$$F = \frac{MS_{between}}{MS_{within}}$$
+
+$F_{krit}$:  
+
+$$\text{df}_F = (k-1, n-k)$$  
+</div>
+
+## platzhalter
+
+maybe eine slide mit eingesetzten werten?
+
+## Berechnung
+
+<div id="left">
+$MS_{within} = \frac{SS_{within}}{n - k} = 3.22$  
+$MS_{between} = \frac{SS_{between}}{k-1} = 34.11$  
+</div>
+
+<div id="right">
+$F_{(k-1, n-k)} = \frac{MS_{between}}{MS_{within}} = \frac{34.11}{3.22} \approx 10.586$  
+$F {(2, 6)}_{krit} = 5.143$
+</div>
+<br />
+
+<div class="fragment">
+<br />
+**Überprüfung:**
+
+```{r a13_aov}
+a13 <- data.frame(hormon_1 = c(9, 12, 8), 
+                  hormon_2 = c(4, 2, 5),
+                  kontrolle = c(3, 6, 3)) %>% 
+  gather(Gruppe, Wert) 
+
+tadaa_aov(Wert ~ Gruppe, a13, print = "markdown")
+```
+</div>
+
+# Aufgabe 14:<br />Konfidenzintervall
 
 ## Aufgabe 14
 
 Sie haben folgende Testwerte von 6 frühgeborenen Kindern bezüglich ihrer motorischen Fähigkeiten vorliegen: 7, 8, 11, 9, 8, 10. Welches Intervall enthält mit einer Mutmaßlichkeit von 99% den wahren Mittelwert der motorischen Fähigkeiten? Erklären Sie: Wie ist es möglich anhand des Konﬁdenzintervalls eine Aussage über die Mutmaßlichkeeit einer Mitte zu treﬀen?
+
+## Berechnung
+<div id="left">
+$${CI} = \bar{x} \pm \sigma_\bar{x} \cdot w_{krit}$$
+</div>
+<div id="right">
+$$w_{krit} = z_{1 - \frac{\alpha}{2}}$$
+</div>
+<br />
+
+<br />
+<div class="fragment">
+**Werte berechnen und einsetzen:**
+
+$$\bar{x} \approx 8.83 \quad \sigma_{\bar{x}} \approx 0.601 \quad z_{1 - \frac{\alpha}{2}} \approx 2.576$$
+$${CI} = 8.83 \pm 0.601 \cdot 2.576$$
+</div>
+
+<br />
+<div class="fragment">
+**Ergebnis:**
+
+$${CI} \approx [7.28; 10.38]$$
+</div>
 
 # Aufgabe 15 
 
