@@ -804,9 +804,10 @@ tadaa_aov(Wert ~ Gruppe, a13, print = "markdown")
 
 ## Aufgabe 14
 
-Sie haben folgende Testwerte von 6 frühgeborenen Kindern bezüglich ihrer motorischen Fähigkeiten vorliegen: 7, 8, 11, 9, 8, 10. Welches Intervall enthält mit einer Mutmaßlichkeit von 99% den wahren Mittelwert der motorischen Fähigkeiten? Erklären Sie: Wie ist es möglich anhand des Konﬁdenzintervalls eine Aussage über die Mutmaßlichkeeit einer Mitte zu treﬀen?
+Sie haben folgende Testwerte von 6 frühgeborenen Kindern bezüglich ihrer motorischen Fähigkeiten vorliegen: 7, 8, 11, 9, 8, 10. Welches Intervall enthält mit einer Mutmaßlichkeit von 99% den wahren Mittelwert der motorischen Fähigkeiten? Erklären Sie: Wie ist es möglich anhand des Konﬁdenzintervalls eine Aussage über die _Mutmaßlichkeit_ **(!!)** einer Mitte zu treﬀen?
 
 ## Berechnung
+
 <div id="left">
 $${CI} = \bar{x} \pm \sigma_\bar{x} \cdot w_{krit}$$
 </div>
@@ -830,13 +831,37 @@ $${CI} = 8.83 \pm 0.601 \cdot 2.576$$
 $${CI} \approx [7.28; 10.38]$$
 </div>
 
-# Aufgabe 15 
+# Aufgabe 15<br />Normalverteilung, warum bist du so hügelig?
 
 ## Aufgabe 15
 
-Nutzen Sie die Standardnormalverteilungstabelle in Studip. Wiederholen Sie die Kenntnisse aus der Deskriptiven Statistik, indem Sie die Wahrscheinlichkeiten von Werten in folgenden Bereichen berechnen:
+Nutzen Sie die Standardnormalverteilungstabelle in Studip. Wiederholen Sie die Kenntnisse aus der Deskriptiven Statistik (_aka **QM I**_), indem Sie die Wahrscheinlichkeiten von Werten in folgenden Bereichen berechnen:
 
 a) Wie wahrscheinlich ist es, dass Werte im Bereich 2 bis 2,5; im Bereich 0,75 bis 1,3 und $-\infty$ bis -0,2 liegen?
+
+b) Es gibt kein b). Gehen Sie weiter, es gibt nichts zu sehen.
+
+## Pro-Tip: einzeichnen
+
+```{r a15_01, fig.height=4, fig.width=8}
+snv <- tibble(
+  x = seq(-4, 4, .01),
+  p = dnorm(x)
+)
+
+ggplot(snv, aes(x, p)) +
+  geom_ribbon(data = filter(snv, x >= 2, x <= 2.5),
+              aes(ymin = 0, ymax = p), fill = "light blue", alpha = .6) +
+  geom_ribbon(data = filter(snv, x >= .75, x <= 1.3),
+              aes(ymin = 0, ymax = p), fill = "light green", alpha = .6) +
+  geom_ribbon(data = filter(snv, x <= -.2),
+              aes(ymin = 0, ymax = p), fill = "red", alpha = .4) +
+  geom_line(size = 1.5, alpha = .7)
+```
+
+${prob}(2; 2.5) = `r round(pnorm(2.5) - pnorm(2), 4)`$  
+${prob}(0.75, 1.3) = `r round(pnorm(1.3) - pnorm(0.75), 4)`$  
+${prob}(-\infty, -0.2) = `r round(pnorm(-0.2), 4)`$
 
 # Aufgabe 16
 
@@ -845,6 +870,16 @@ a) Wie wahrscheinlich ist es, dass Werte im Bereich 2 bis 2,5; im Bereich 0,75 b
 10 Frauen in der Alterskategorie 40+ wurden in einer Studie über ihre sportlichen Aktivitäten befragt. Jede dieser Frauen war in den letzten Monaten als Mitglied im Fitnessstudio registriert. Berechnen Sie auf Basis der nachfolgenden Daten den Standardfehler und die Standardabweichung. Vergleichen Sie die Werte.
 
 ![](https://dump.jemu.name/2018-07-myzl6vvuf09tw32.png)
+
+## Berechnung{.build}
+
+- $x = \{1,7,1,2,1,3,2,1,1,1\}$
+- $n = 10$
+- $\bar{x} = `r mean(c(1,7,1,2,1,3,2,1,1,1))`$
+- $S_x = \sqrt{\frac{1}{10 - 1} (2-1)^2 + (2-7)^2 + \ldots + (2-1)^2 + (2-1)^2} = \sqrt{\frac{32}{9}} \approx 1.886$
+- $S_{\bar{x}} = \frac{S_x}{\sqrt{n}} = \frac{1.886}{\sqrt{10}} \approx 0.5963$
+
+- $$S_{\bar{x}} \leq S_x$$
 
 # Klar soweit?
 
