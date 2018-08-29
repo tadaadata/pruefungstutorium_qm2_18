@@ -869,17 +869,22 @@ ${prob}(-\infty, -0.2) = `r round(pnorm(-0.2), 4)`$
 
 10 Frauen in der Alterskategorie 40+ wurden in einer Studie über ihre sportlichen Aktivitäten befragt. Jede dieser Frauen war in den letzten Monaten als Mitglied im Fitnessstudio registriert. Berechnen Sie auf Basis der nachfolgenden Daten den Standardfehler und die Standardabweichung. Vergleichen Sie die Werte.
 
-![](https://dump.jemu.name/2018-07-myzl6vvuf09tw32.png)
+Werte: $1,7,1,2,1,3,2,1,1,1$
 
 ## Berechnung{.build}
 
 - $x = \{1,7,1,2,1,3,2,1,1,1\}$
 - $n = 10$
 - $\bar{x} = `r mean(c(1,7,1,2,1,3,2,1,1,1))`$
-- $S_x = \sqrt{\frac{1}{10 - 1} (2-1)^2 + (2-7)^2 + \ldots + (2-1)^2 + (2-1)^2} = \sqrt{\frac{32}{9}} \approx 1.886$
-- $S_{\bar{x}} = \frac{S_x}{\sqrt{n}} = \frac{1.886}{\sqrt{10}} \approx 0.5963$
 
-- $$S_{\bar{x}} \leq S_x$$
+
+$$\begin{align}
+S_x &= \sqrt{\frac{1}{10 - 1} (2-1)^2 + (2-7)^2 + \ldots + (2-1)^2 + (2-1)^2} \\
+&= \sqrt{\frac{32}{9}} \approx \underline{1.886} \\
+S_{\bar{x}} &= \frac{S_x}{\sqrt{n}} = \frac{1.886}{\sqrt{10}} \approx \underline{0.5963}
+\end{align}$$
+
+$$S_{\bar{x}} \leq S_x$$
 
 # Klar soweit?
 
