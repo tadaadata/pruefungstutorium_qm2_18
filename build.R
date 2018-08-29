@@ -9,13 +9,7 @@ if (!file.exists("data/qm_survey_ss2018_r.rds")) {
 cat("\nRendering presentation...\n\n")
 rmarkdown::render(input         = "presentation.Rmd",
                   output_format = "revealjs::revealjs_presentation",
-                  output_file   = "presentation.html", quiet = TRUE)
-
-cat("Rendering single page version...\n\n")
-# html_document themes
-# rmarkdown::render(input         = "presentation.Rmd",
-#                   output_format = "html_document",
-#                   output_file   = "index.html", quiet = TRUE)
+                  output_file   = "index.html", quiet = TRUE)
 
 cat("\nAll done.\n")
 timestamp()
