@@ -226,17 +226,15 @@ Optimaler Stichprobenumfang you say?
 
 $$n \geq \frac{\left(z_{1-\beta} - z_\alpha \right)^2}{\Delta^2}$$
 
-$z_{1-\beta} = z_{1-0.15} = z_{0.85} \approx 1.04$
-$z_\alpha = z_{0.05} \approx -1.64$
-$\Delta = -0.6$
+$$z_{1-\beta} = z_{1-0.15} = z_{0.85} \approx 1.04 \quad z_\alpha = z_{0.05} \approx -1.64 \quad \Delta = -0.6$$
 
 $$\begin{align}
-n \geq& \frac{\left(z_{1-\beta} - z_\alpha \right)^2}{\Delta} \\
+n \geq& \frac{\left(z_{1-\beta} - z_\alpha \right)^2}{\Delta^2} \\
 n \geq& \frac{\left(1.04 - \left(-1.64 \right)\right)^2}{-0.6^2} \\
 n \geq& \frac{8.98}{0.36} \approx \underline{\underline{25}}
 \end{align}$$
 
-Close enough. Software macht komplizierte Dinge weil's 'ne t-verteilung ist, wir können per Hand nur Normalverteilungskram rechnen.
+Close enough. Software macht komplizierte Dinge weil's 'ne t-Verteilung ist, wir können per Hand nur Normalverteilungskram rechnen.
 
 ## Aufgabe 3: Ch-ch-changes
 
@@ -310,7 +308,7 @@ map_df(seq_len(20), function(x){
 
 ## Aufgabe 5
 
-Berechnen Sie einen geeigneten Test für die Fragestellung, ob die Verteilungen des Alkoholkkonsums bei ernährungsbewussten StudentInnen (Vegetarier) und der ﬂeischkonsumierenden StudentInnen gleich sind. Prüfen Sie einseitig die Annahme, dass die Tatsache Vegetarier zu sein, sich positiv auf einen geringeren Alkoholkonsum auswirkt. Wie kommt der resultierende Testwert zustande?
+Berechnen Sie einen geeigneten Test für die Fragestellung, ob die Verteilungen des Alkoholkkonsums bei ernährungsbewussten Student\*innen (Vegetarier) und der ﬂeischkonsumierenden Student\*innen gleich sind. Prüfen Sie einseitig die Annahme, dass die Tatsache Vegetarier zu sein, sich positiv auf einen geringeren Alkoholkonsum auswirkt. Wie kommt der resultierende Testwert zustande?
 
 <div class="fragment">
 $H_0\text{: }$ die Ernährungsart hat keinen Einfluss auf den Alkoholkonsum  
