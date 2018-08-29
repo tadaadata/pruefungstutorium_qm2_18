@@ -1,6 +1,6 @@
 ---
 title: "Prüfungstutorium QM 2 (SoSe ‘18)"
-author: "mit Tobi & Lukas"
+author: "mit Tobi, Lukas & Gesa"
 date: "`r format(lubridate::now(tzone = 'CET'), 'erstellt am %F um %H:%M Uhr')`"
 output:
   revealjs::revealjs_presentation:
