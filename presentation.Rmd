@@ -724,6 +724,33 @@ Wählen Sie selbst für Sie interessante Variablen einmal für eine Varianzanaly
 
 ## Anova
 
+Brauchen regelmäßige Cannabiskonsumierende morgens mehr Zeit sich bereit zu machen? 
+
+<div class="fragment">
+```{r a11_anovaplot}
+ggplot(qm, aes(x = cannabis, y = morgens, 
+               fill = cannabis, color = cannabis)) +
+  geom_boxplot(alpha = .5) +
+  scale_color_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1") +
+  labs(title = "Deskriptiv",
+       x = get_label(qm$cannabis),
+       y = "Minuten",
+       color = "Cannabiskonsum",
+       fill  = "Cannabiskonsum")
+```
+</div>
+
+## Anova - Ausgabe
+
+Brauchen regelmäßige Cannabiskonsumierende morgens mehr Zeit sich bereit zu machen? 
+
+```{r a11_anovatbl}
+tadaa_aov(morgens ~ cannabis, qm, print = "markdown")
+```
+
+## Kruskal-Wallis
+
 
 
 # Aufgabe 12
