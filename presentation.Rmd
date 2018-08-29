@@ -710,7 +710,7 @@ Gilt für G*Power sowie die R-funktionen aus dem `pwr` package!
 pwr.anova.test(k = 6, f = sqrt(0.14 / (1 - 0.14)), sig.level = 0.05, power = 0.8)
 ```
 
-# Aufgabe 11
+# Aufgabe 11:<br />Anatomie eines Psycho-Ersties
 
 ## Aufgabe 11
 
@@ -724,6 +724,93 @@ Wählen Sie selbst für Sie interessante Variablen einmal für eine Varianzanaly
 
 ## Anova
 
+Brauchen regelmäßige Cannabiskonsumierende morgens mehr Zeit sich bereit zu machen? 
+
+<div class="fragment">
+```{r a11_anovaplot}
+ggplot(qm, aes(x = cannabis, y = morgens, 
+               fill = cannabis, color = cannabis)) +
+  geom_boxplot(alpha = .5) +
+  scale_color_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1") +
+  labs(title = "Deskriptiv",
+       x = get_label(qm$cannabis),
+       y = "Minuten",
+       color = "Cannabiskonsum",
+       fill  = "Cannabiskonsum")
+```
+</div>
+
+## Anova - Ausgabe
+
+Brauchen regelmäßige Cannabiskonsumierende morgens mehr Zeit sich bereit zu machen? 
+
+```{r a11_anovatbl}
+tadaa_aov(morgens ~ cannabis, qm, print = "markdown")
+```
+
+## Kruskal-Wallis
+
+Sind politisch aktive Menschen promiskuitiver als weniger politisch aktive?
+
+<div class="fragment">
+```{r a11_kwplot}
+ggplot(qm, aes(x = demo, y = partnerinnen, 
+               fill = demo, color = demo)) +
+  geom_boxplot(alpha = .5) +
+  scale_color_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1") +
+  labs(title = "Deskriptiv",
+       x = get_label(qm$demo),
+       y = "Sexualpartner*innen",
+       color = "Demoteilnahmen",
+       fill  = "Demoteilnahmen")
+```
+</div>
+
+## Kruskal-Wallis - Ausgabe
+
+Sind politisch aktive Menschen promiskuitiver als weniger politisch aktive?
+
+```{r a11_kwtbl}
+tadaa_kruskal(partnerinnen ~ demo, qm, print = "markdown")
+```
+
+<div class="fragment">
+post-hoc - paarweise Vergleiche:
+<p class="small">(straight outta **R**)</p>
+
+```{r a11_kwposthoc}
+pairwise.wilcox.test(qm$partnerinnen, qm$demo)
+```
+</div>
+
+## Wilcoxon Test
+
+Besteht ein Unterschied im Lernaufwand zwischen den Kohorten 16/17 und 17/18?
+
+<div class="fragment">
+```{r a11_wilcoxplot}
+ggplot(qm, aes(x = kohorte, y = lernen, 
+               fill = kohorte, color = kohorte)) +
+  geom_boxplot(alpha = .5) +
+  scale_color_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1") +
+  labs(title = "Deskriptiv",
+       x = "Kohorte",
+       y = "Stunden Lernen pro Woche",
+       color = "Kohorte",
+       fill  = "Kohorte")
+```
+</div>
+
+## Kruskal-Wallis - Ausgabe
+
+Besteht ein Unterschied im Lernaufwand zwischen den Kohorten 16/17 und 17/18?
+
+```{r a11_wilcoxtbl}
+tadaa_wilcoxon(qm, lernen, kohorte, print = "markdown")
+```
 
 
 # Aufgabe 12
