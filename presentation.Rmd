@@ -61,6 +61,11 @@ theme_set(theme_tadaa(base_size = 16, bg = "#ffffff"))
 
 # no data, no stats
 qm <- readRDS("./data/qm_survey_ss2018_r.rds")
+
+snv <- tibble(
+  x = seq(-4, 4, .01),
+  p = dnorm(x)
+)
 ```
 
 # Na, auch hier?
@@ -98,7 +103,7 @@ sjt.xtab(ngo$geschl, ngo$abschalt, show.exp = TRUE,
 ```
 </div>
 
-<div id = "right">
+<div id = "right" class="fragment">
 $$\begin{align}
 \chi^2 =& \sum \frac{(f_b - f_e)^2}{f_e} \\
 \chi^2 =& \frac{(60  - 69)^2}{69} + \frac{(63 - 54)^2}{54} \\+ 
@@ -106,6 +111,8 @@ $$\begin{align}
 \chi^2 \approx& {\color{red}{\underline{\underline{5.35}}}}
 \end{align}$$
 </div>
+
+<div class="fragment">**Bonus:** Inferenzschluss, anyone?</div>
 
 # Aufgabe 2:<br />ein- & zweiseitiges Testen
 
@@ -122,7 +129,7 @@ b) Zu welchem Ergebnis würde der Inferenzschluss führen, wenn anstelle des _ei
 **Stichprobe ziehen, Testwert bestimmen**
 
 ```{r}
-set.seed(2) # Hashtag Determinismus
+set.seed(10) # Hashtag Determinismus
 a02_mean <- ngo %>% sample_n(40) %>% pull(stunzahl) %>% mean
 ```
 
@@ -146,18 +153,24 @@ _Kritischer Wert_ bei $\alpha = 5\%$, einseitig: -1.64
 ```{r a02a_bunt}
 ztest <- (a02_mean - 33) / (1.5 / sqrt(40))
 
-ggplot(data = NULL, aes(x = -3.3:3.3)) +
-  stat_function(fun = dnorm, geom = "density", color = "black") +
+ggplot(snv, aes(x, p)) +
+  geom_line(size = 1.5, alpha = .7) +
+  geom_ribbon(data = filter(snv, x < qnorm(.05)),
+              aes(ymin = 0, ymax = p),
+              fill = "red", alpha = .3) +
+  geom_ribbon(data = filter(snv, x < ztest),
+              aes(ymin = 0, ymax = p),
+              fill = "blue", alpha = .3) +
   geom_vline(aes(xintercept = qnorm(.05)), color = "red") +
   geom_vline(aes(xintercept = ztest), color = "blue") +
-  annotate("text", x = qnorm(.05), y = 0.35, color = "dark red", size = 5,
+  annotate("label", x = qnorm(.05) - .05, y = 0.35, color = "dark red", size = 5,
            hjust = 1,
            label = paste("z[krit]", "==", round(qnorm(.05), 2)), parse = T) +
-  annotate("text", x = ztest, y = 0.25, color = "dark blue", size = 7,
+  annotate("label", x = ztest + .05, y = 0.25, color = "dark blue", size = 7,
            hjust = 0,
            label = paste("z[test]", "==", round(ztest, 2)), parse = T) +
-  labs(x = NULL, y = NULL) +
-  theme_readthedown(base_family = "Palatino")
+  labs(x = "z-Wert", y = "Dichte")
+  
 ```
 
 ## Aufgabe 2b: same same, but zweiseitig
@@ -165,21 +178,27 @@ ggplot(data = NULL, aes(x = -3.3:3.3)) +
 _Kritischer Werte_ bei $\alpha = 5\%$, zweiseitig: -1.96 & 1.96
 
 ```{r a02b_bunt}
-ggplot(data = NULL, aes(x = -3.3:3.3)) +
-  stat_function(fun = dnorm, geom = "density", color = "black") +
-  geom_vline(aes(xintercept = c(qnorm(.025), qnorm(.975))), color = "red") +
+ggplot(snv, aes(x, p)) +
+  geom_line(size = 1.5, alpha = .7) +
+  geom_ribbon(data = filter(snv, x < qnorm(.025)),
+              aes(ymin = 0, ymax = p),
+              fill = "red", alpha = .3) +
+  geom_ribbon(data = filter(snv, x > qnorm(.975)),
+              aes(ymin = 0, ymax = p),
+              fill = "red", alpha = .3) +
+  geom_vline(aes(xintercept = qnorm(.025)), color = "red") +
+  geom_vline(aes(xintercept = qnorm(.975)), color = "red") +
   geom_vline(aes(xintercept = ztest), color = "blue") +
-  annotate("label", x = qnorm(.025), y = 0.35, color = "dark red", size = 5,
+  annotate("label", x = qnorm(.025) - .05, y = 0.35, color = "dark red", size = 5,
            hjust = 1,
            label = paste("z[krit]", "==", round(qnorm(.025), 2)), parse = T) +
-  annotate("label", x = qnorm(.975), y = 0.35, color = "dark red", size = 5,
+  annotate("label", x = qnorm(.975) + .05, y = 0.35, color = "dark red", size = 5,
            hjust = 0,
            label = paste("z[krit]", "==", round(qnorm(.975), 2)), parse = T) +
-  annotate("label", x = ztest, y = 0.25, color = "dark blue", size = 7,
+  annotate("label", x = ztest + .05, y = 0.25, color = "dark blue", size = 7,
            hjust = 0,
            label = paste("z[test]", "==", round(ztest, 2)), parse = T) +
-  labs(x = NULL, y = NULL) +
-  theme_readthedown(base_family = "Palatino")
+  labs(x = "z-Wert", y = "Dichte")
 ```
 
 # Aufgabe 3:<br />Poweranalyse (einsitiger t-Test)
@@ -811,13 +830,16 @@ tadaa_wilcoxon(qm, lernen, kohorte, print = "markdown")
 ```
 
 
-# Aufgabe 12
+# Aufgabe 12:<br />ALL the Testsstats & Stuff!!
 
 ## Lernhilfe
 
 Nennen Sie die Voraussetzungen aller behandelter Signifikanztests und ihrer Teststatistiken. Erstellen Sie hierzu eine Übersicht. Schauen Sie sich Ausgabetabellen aller Signifikanztests an und legen Sie fest, was einzelne Werte aussagen, wie sie ggfs. berechnet werden und wie im Besonderen Testwerte zustande kommen.
 
-## lolnein.
+<br />
+<div class="big fragment">
+lolnein.
+</div>
 
 # Aufgabenblock:<br />Berechnungen per Hand
 
@@ -929,11 +951,6 @@ b) Es gibt kein b). Gehen Sie weiter, es gibt nichts zu sehen.
 ## Pro-Tip: einzeichnen
 
 ```{r a15_01, fig.height=4, fig.width=8}
-snv <- tibble(
-  x = seq(-4, 4, .01),
-  p = dnorm(x)
-)
-
 ggplot(snv, aes(x, p)) +
   geom_ribbon(data = filter(snv, x >= 2, x <= 2.5),
               aes(ymin = 0, ymax = p), fill = "light blue", alpha = .6) +
