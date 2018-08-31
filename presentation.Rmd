@@ -667,13 +667,13 @@ ngo %>%
   group_by(geschl) %>% 
   sample_n(24) %>% 
   ungroup() %>% 
-  tadaa_t.test(., deutsch, geschl, paired = TRUE, print = "markdown")
+  tadaa_t.test(., deutsch, geschl, print = "markdown")
 ```
 
 **Population:**
 
 ```{r a09_population}
-tadaa_t.test(ngo, deutsch, geschl, paired = TRUE, print = "markdown")
+tadaa_t.test(ngo, deutsch, geschl, print = "markdown")
 ```
 
 
