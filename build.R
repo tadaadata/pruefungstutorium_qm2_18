@@ -18,5 +18,5 @@ library(slackr)
 slackr_setup(config_file = "/opt/tadaadata/.slackr")
 
 msg <- paste0(lubridate::now(tzone = "CET"), ": Built Prüfungstutorium SoSe 18. ",
-              "Clicky: https://public.tadaa-data.de/pruefungstutorien/qm2_sose_18/presentation.html")
+              "Clicky: https://public.tadaa-data.de/pruefungstutorien/qm2_sose_18/")
 text_slackr(msg, channel = "#tutorium", username = "tadaabot", preformatted = FALSE)

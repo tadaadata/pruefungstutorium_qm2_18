@@ -233,7 +233,7 @@ $\Delta = -0.6$
 $$\begin{align}
 n \geq& \frac{\left(z_{1-\beta} - z_\alpha \right)^2}{\Delta} \\
 n \geq& \frac{\left(1.04 - \left(-1.64 \right)\right)^2}{-0.6^2} \\
-n \geq& \frac{8.98}{0.36} \approx \underline{\underline{25}}
+n \geq& \frac{7.1824}{0.36} \approx \underline{\underline{20}}
 \end{align}$$
 
 Close enough. Software macht komplizierte Dinge weil's 'ne t-verteilung ist, wir können per Hand nur Normalverteilungskram rechnen.
